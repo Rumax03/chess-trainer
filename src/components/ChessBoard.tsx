@@ -1,7 +1,7 @@
 import { Chess, type Square } from "chess.js";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
-const GLYPH: Record<string, string> = { k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟" };
+function Piece({type,color}:{type:string;color:string}) { const fill=color==="w"?"#fff8e8":"#252a32"; const stroke=color==="w"?"#252a32":"#e0d5bd"; return <svg viewBox="0 0 48 48" className="relative z-10 h-[85%] w-[85%] pointer-events-none" fill={fill} stroke={stroke} strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">{({p:<><circle cx="24" cy="13" r="6"/><path d="M19 19h10l-2 10 7 7H14l7-7z"/><path d="M12 36h24v5H12z"/></>,r:<><path d="M11 8h7v6h4V8h5v6h4V8h6v12l-5 5v10H16V25l-5-5z"/><path d="M12 35h24v6H12z"/></>,n:<><path d="M13 35c0-10 8-13 12-19l-9 5-7-5L23 5l3 5c11 2 13 14 10 25z"/><circle cx="24" cy="13" r="1.5" fill={stroke}/><path d="M11 35h27v6H11z"/></>,b:<><path d="M24 5c-5 5-11 11-10 17 0 5 5 7 7 8l-7 6h20l-7-6c9-4 10-12 3-19l-7 9"/><path d="M12 36h24v5H12z"/></>,q:<><path d="M9 14l7 9 8-15 8 15 7-9-5 21H14z"/><circle cx="9" cy="11" r="3"/><circle cx="24" cy="6" r="3"/><circle cx="39" cy="11" r="3"/><path d="M12 35h24v6H12z"/></>,k:<><path d="M24 4v12M18 9h12" fill="none" strokeWidth="3"/><path d="M24 19C12 8 6 20 15 28l3 7h12l3-7c9-8 3-20-9-9z"/><path d="M12 35h24v6H12z"/></>} as Record<string, ReactNode>)[type]}</svg>; }
 const FILES = "abcdefgh";
 
 export interface BoardArrow { from: string; to: string; kind?: "move" | "idea" }
@@ -71,11 +71,7 @@ export function ChessBoard({ fen, orientation, interactive, onMove, lastMove, ar
                   <span className={`absolute bottom-0 right-1 text-[10px] font-bold ${dark ? "text-[var(--sq-dark)]" : "text-[var(--sq-light)]"}`}>{f}</span>
                 )}
                 {p && (
-                  <span
-                    className={`relative z-10 text-[min(10vw,3.4rem)] leading-none ${p.color === "w" ? "text-[var(--piece-white)] [text-shadow:0_0_2px_var(--piece-black),0_0_1px_var(--piece-black),0_2px_3px_oklch(0_0_0/0.4)]" : "text-[var(--piece-black)] [text-shadow:0_0_1px_var(--piece-white),0_2px_3px_oklch(0_0_0/0.3)]"}`}
-                  >
-                    {GLYPH[p.type]}
-                  </span>
+                  <Piece type={p.type} color={p.color} />
                 )}
                 {isTarget && (
                   <span className={`absolute z-20 rounded-full ${p ? "inset-1 border-4 border-[var(--sq-select)]" : "h-1/4 w-1/4 bg-[var(--sq-select)]"}`} />
